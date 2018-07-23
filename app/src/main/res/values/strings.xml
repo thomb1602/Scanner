@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Scanner</string>
+    <string name="put_away">Put away stock</string>
+    <string name="find">Find stock</string>
+    <string name="add">Add stock</string>
+    <string name="scan_barcode">Scan product barcode</string>
+    <string name="enter_SKU">Enter SKU:</string>
+    <string name="scan_bin">Scan bin QR code</string>
+    <string name="putting_away">Putting away: </string>
+    <string name="which_bins">This product is currently in the following bins:</string>
+    <string name="verify_bin">Please scan the barcode of the chosen bin to verify it</string>
+    <string name="bin_verified">Successfully verified bin </string>
+    <string name="putaway_how_many">How many are you putting away in this bin?</string>
+    <string name="putaway_verified">Putaway completed </string>
+    <string name="next">Next</string>
+    <string name="finished">Finsihed</string>
+
+</resources>
+
