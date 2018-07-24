@@ -77,12 +77,11 @@ public class PutawayUpdateDbThread extends Thread {
         int responseCode = conn.getResponseCode();
         if(responseCode == HttpURLConnection.HTTP_OK)
         {
-            //success
+            return true;
         }
         else
         {
-            //failed, do something
+            return false;
         }
-        return true;
     }
 }

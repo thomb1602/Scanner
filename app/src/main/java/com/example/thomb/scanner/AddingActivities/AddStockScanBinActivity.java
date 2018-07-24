@@ -13,6 +13,8 @@ import com.google.zxing.integration.android.IntentResult;
 
 import com.example.thomb.scanner.R;
 
+import java.util.regex.Pattern;
+
 public class AddStockScanBinActivity extends AppCompatActivity {
 
     Button scanBinButton;
@@ -23,13 +25,27 @@ public class AddStockScanBinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_stock_scan_bin);
         scanBinButton = findViewById(R.id.scanBinButton);
-        scanProductButton = findViewById(R.id.scanBinButton);
+        scanProductButton = findViewById(R.id.scanProductButton);
 
-        final Activity activity = this;
+        final Activity scanActivity = this;
+
         scanBinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IntentIntegrator intentIntegrator = new IntentIntegrator(activity);
+                IntentIntegrator intentIntegrator = new IntentIntegrator(scanActivity);
+                intentIntegrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+                intentIntegrator.setPrompt("Scan");
+                intentIntegrator.setCameraId(0);
+                intentIntegrator.setBeepEnabled(false);
+                intentIntegrator.setBarcodeImageEnabled(false);
+                intentIntegrator.initiateScan();
+            }
+        });
+
+        scanProductButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                IntentIntegrator intentIntegrator = new IntentIntegrator(scanActivity);
                 intentIntegrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
                 intentIntegrator.setPrompt("Scan");
                 intentIntegrator.setCameraId(0);
@@ -45,19 +61,33 @@ public class AddStockScanBinActivity extends AppCompatActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null)
         {
-            String productId = result.getContents();
+            String scanContents = result.getContents();
             if(result.getContents() == null)
             {
                 Toast.makeText(this, "You cancelled scanning", Toast.LENGTH_LONG).show();
             }
             else
             {
-                Toast.makeText(this, productId, Toast.LENGTH_LONG).show();
+                if(isGuid(scanContents))
+                {
+                    Toast.makeText(this, scanContents + " is a bin", Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    Toast.makeText(this, scanContents + " is a product", Toast.LENGTH_LONG).show();
+                }
+
             }
         }
         else
         {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private boolean isGuid(String scanContents)
+    {
+        String guidRegex = "[0-9a-f]{8}[-][0-9a-f]{4}[-][0-9a-f]{4}[-][0-9a-f]{4}[-][0-9a-f]{12}";
+        return Pattern.matches(guidRegex, scanContents);
     }
 }
