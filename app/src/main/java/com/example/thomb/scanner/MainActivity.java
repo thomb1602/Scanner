@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.thomb.scanner.AddingActivities.AddStockScanBinActivity;
+import com.example.thomb.scanner.AddingActivities.AddStockScanBinOrProductActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addIntent = new Intent(MainActivity.this, AddStockScanBinActivity.class);
+                addIntent = new Intent(MainActivity.this, AddStockScanBinOrProductActivity.class);
                 startActivity(addIntent);
             }
         });
