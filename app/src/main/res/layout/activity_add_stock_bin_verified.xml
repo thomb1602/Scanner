@@ -7,6 +7,21 @@
     tools:context="com.example.thomb.scanner.AddingActivities.AddStockBinVerifiedActivity">
 
     <include
+        android:id="@+id/bin_name_verified"
+        layout="@layout/partial_bin_verified"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.194" />
+
+    <include
         android:id="@+id/scan_or_sku"
         layout="@layout/partial_scan_or_sku"
         android:layout_width="wrap_content"
@@ -21,5 +36,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.74" />
+
 
 </android.support.constraint.ConstraintLayout>

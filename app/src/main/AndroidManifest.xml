@@ -31,7 +31,9 @@
         <activity android:name=".PutawayBinVerifiedActivity" />
         <activity android:name=".PutawayCompletedActivity" />
         <activity android:name=".AddingActivities.ThenScanBinActivity" />
-        <activity android:name=".AddingActivities.AddStockBinVerifiedActivity"></activity>
+        <activity android:name=".AddingActivities.AddStockBinVerifiedActivity" />
+        <activity android:name=".AddingActivities.AddStockHowManyActivity" />
+        <activity android:name=".AddingActivities.AddStockProductIdentifiedActivity"></activity>
     </application>
 
 </manifest>

@@ -16,6 +16,8 @@
     <string name="finished">Finsihed</string>
     <string name="or">Or</string>
     <string name="product_identified">Product identified</string>
+    <string name="confirm">Confirm</string>
+    <string name="how_many_of_product">How many of this product are in this bin?</string>
 
 </resources>
 

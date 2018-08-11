@@ -1,9 +1,7 @@
 package com.example.thomb.scanner.AddingActivities;
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,8 +9,8 @@ import android.widget.Toast;
 
 
 import com.example.thomb.scanner.DataModels.StockQuantityUpdate;
-import com.example.thomb.scanner.PutawayActivity;
-import com.example.thomb.scanner.PutawayBinListActivity;
+import com.example.thomb.scanner.Listeners.ScanButtonListener;
+import com.example.thomb.scanner.Listeners.SkuEnterKeyListener;
 import com.example.thomb.scanner.Scanner;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -29,60 +27,32 @@ public class AddStockScanBinOrProductActivity extends AppCompatActivity {
     private String SkuNumber;
     private Intent binVerifiedIntent;
 
+    private View skuText;
+    private SkuEnterKeyListener skuListener;
+    private Button scanButton;
+    private ScanButtonListener scanButtonListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_stock_scan_bin);
+
+        skuText = findViewById(R.id.enter_SKU_txt);
+        Intent skuEnterIntent = new Intent(this.getApplicationContext(), AddStockProductIdentifiedActivity.class);
+        skuListener = new SkuEnterKeyListener(this.getApplicationContext(), this, skuEnterIntent);
+        skuText.setOnKeyListener(skuListener);
+
         scanBinButton = findViewById(R.id.scanBinButton);
-        scanProductButton = findViewById(R.id.scanProductButton);
+        scanButtonListener = new ScanButtonListener(this.getApplicationContext(), this);
+        scanBinButton.setOnClickListener(scanButtonListener);
 
-        final Activity scanActivity = this;
+        View scanOrSku = findViewById(R.id.outerScanOrsku);
+        scanProductButton = scanOrSku.findViewById(R.id.scan_barcode);
+        scanProductButton.setOnClickListener(scanButtonListener);
 
-        scanBinButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                IntentIntegrator intentIntegrator = new IntentIntegrator(scanActivity);
-                intentIntegrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-                intentIntegrator.setPrompt("Scan");
-                intentIntegrator.setCameraId(0);
-                intentIntegrator.setBeepEnabled(false);
-                intentIntegrator.setBarcodeImageEnabled(false);
-                intentIntegrator.initiateScan();
-            }
-        });
+        SkuNumberEditText = findViewById(R.id.enter_SKU_txt);
 
-        scanProductButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                IntentIntegrator intentIntegrator = new IntentIntegrator(scanActivity);
-                intentIntegrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-                intentIntegrator.setPrompt("Scan");
-                intentIntegrator.setCameraId(0);
-                intentIntegrator.setBeepEnabled(false);
-                intentIntegrator.setBarcodeImageEnabled(false);
-                intentIntegrator.initiateScan();
-            }
-        });
-
-        SkuNumberEditText = findViewById(R.id.enter_sku_text);
-        SkuNumberEditText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if(keyEvent.getAction() == KeyEvent.ACTION_DOWN)
-                {
-                    if(keyCode == KeyEvent.KEYCODE_ENTER)
-                    {
-                        SkuNumber = SkuNumberEditText.getText().toString();
-                        setSKUinStockObj(SkuNumber);
-                        /*binListIntent = new Intent(PutawayActivity.this, PutawayBinListActivity.class);
-                        binListIntent.putExtra("SKU", SkuNumber);
-                        startActivity(binListIntent);*/
-                    }
-                }
-                return false;
-            }
-        });
     }
 
     @Override
