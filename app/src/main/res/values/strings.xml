@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">Scanner</string>
+    <string name="use_info">Use information that is already in the database to navigate the warehouse</string>
     <string name="put_away">Put away stock</string>
     <string name="find">Find stock</string>
+    <string name="add_info">Add information about what is in the warehouse to the database</string>
     <string name="add">Add stock</string>
+    <string name="add_product">Add product</string>
     <string name="scan_barcode">Scan product barcode</string>
     <string name="enter_SKU">Enter SKU:</string>
     <string name="scan_bin">Scan bin QR code</string>
@@ -18,6 +21,7 @@
     <string name="product_identified">Product identified</string>
     <string name="confirm">Confirm</string>
     <string name="how_many_of_product">How many of this product are in this bin?</string>
+    <string name="bin_identified">Bin identified</string>
 
 </resources>
 

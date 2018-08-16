@@ -43,8 +43,6 @@ public class AddStockProductIdentifiedActivity extends AppCompatActivity {
                 ga.setBarcodeInStockObj(binQrCode);
                 Intent howManyIntent = new Intent(AddStockProductIdentifiedActivity.this, AddStockHowManyActivity.class);
                 startActivity(howManyIntent);
-                //show bin confirmed and sku/scan
-
             }
         }
         else

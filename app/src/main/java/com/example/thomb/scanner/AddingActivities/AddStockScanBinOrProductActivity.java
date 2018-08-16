@@ -1,5 +1,6 @@
 package com.example.thomb.scanner.AddingActivities;
 import android.content.Intent;
+import android.support.constraint.solver.widgets.Helper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.Toast;
 
 
 import com.example.thomb.scanner.DataModels.StockQuantityUpdate;
+import com.example.thomb.scanner.Helpers.GlobalAccessor;
+import com.example.thomb.scanner.Helpers.HelperMethods;
 import com.example.thomb.scanner.Listeners.ScanButtonListener;
 import com.example.thomb.scanner.Listeners.SkuEnterKeyListener;
 import com.example.thomb.scanner.Scanner;
@@ -21,22 +24,23 @@ import java.util.regex.Pattern;
 
 public class AddStockScanBinOrProductActivity extends AppCompatActivity {
 
-    Button scanBinButton;
-    Button scanProductButton;
+    private Button scanBinButton;
+    private Button scanProductButton;
     private EditText SkuNumberEditText;
-    private String SkuNumber;
     private Intent binVerifiedIntent;
+    private Intent productFoundIntent;
 
     private View skuText;
     private SkuEnterKeyListener skuListener;
-    private Button scanButton;
     private ScanButtonListener scanButtonListener;
 
+    private GlobalAccessor ga;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_stock_scan_bin);
+        ga = new GlobalAccessor(this.getApplicationContext(), AddStockScanBinOrProductActivity.this);
 
         skuText = findViewById(R.id.enter_SKU_txt);
         Intent skuEnterIntent = new Intent(this.getApplicationContext(), AddStockProductIdentifiedActivity.class);
@@ -67,53 +71,24 @@ public class AddStockScanBinOrProductActivity extends AppCompatActivity {
             }
             else
             {
-                if(isGuid(scanContents))
+                HelperMethods helper = new HelperMethods();
+                if(helper.isGuid(scanContents))
                 {
-                    Toast.makeText(this, scanContents + " is a bin", Toast.LENGTH_LONG).show();
-                    setBinIdInStockObj(scanContents);
+                    ga.setBinIdInStockObj(scanContents);
                     binVerifiedIntent = new Intent(AddStockScanBinOrProductActivity.this, AddStockBinVerifiedActivity.class);
                     startActivity(binVerifiedIntent);
-                    //show bin confirmed and sku/scan
                 }
                 else
                 {
-                    Toast.makeText(this, scanContents + " is a product", Toast.LENGTH_LONG).show();
-                    setBarcodeInStockObj(scanContents);
-                    //show product verified and scan bin
+                    ga.setBarcodeInStockObj(scanContents);
+                    productFoundIntent = new Intent(AddStockScanBinOrProductActivity.this, AddStockProductIdentifiedActivity.class);
+                    startActivity(productFoundIntent);
                 }
-
             }
         }
         else
         {
             super.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    private boolean isGuid(String scanContents)
-    {
-        String guidRegex = "[0-9a-f]{8}[-][0-9a-f]{4}[-][0-9a-f]{4}[-][0-9a-f]{4}[-][0-9a-f]{12}";
-        return Pattern.matches(guidRegex, scanContents);
-    }
-
-    private void setSKUinStockObj(String SKU)
-    {
-        StockQuantityUpdate stockUpdateObj = new StockQuantityUpdate();
-        stockUpdateObj.setSKU(SKU);
-        ((Scanner) this.getApplication()).setStockQtyUpdate(stockUpdateObj);
-    }
-
-    private void setBarcodeInStockObj(String barcode)
-    {
-        StockQuantityUpdate stockUpdateObj = new StockQuantityUpdate();
-        stockUpdateObj.setBarcode(barcode);
-        ((Scanner) this.getApplication()).setStockQtyUpdate(stockUpdateObj);
-    }
-
-    private void setBinIdInStockObj(String binId)
-    {
-        StockQuantityUpdate stockUpdateObj = new StockQuantityUpdate();
-        stockUpdateObj.setBinId(binId);
-        ((Scanner) this.getApplication()).setStockQtyUpdate(stockUpdateObj);
     }
 }

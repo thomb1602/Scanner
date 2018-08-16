@@ -14,30 +14,43 @@ public class GlobalAccessor {
 
     private Context context;
     private Activity callerActivity;
+    private StockQuantityUpdate stockUpdateObj;
 
     public GlobalAccessor(Context context, Activity activity)
     {
         this.context = context;
         this.callerActivity = activity;
+        this.stockUpdateObj = ((Scanner) context.getApplicationContext()).getStockQtyUpdate();
+    }
+
+    public void setBinIdInStockObj(String binId)
+    {
+        stockUpdateObj.setBinId(binId);
+        ((Scanner) callerActivity.getApplication()).setStockQtyUpdate(stockUpdateObj);
+
     }
 
     public void setSKUinStockObj(String SKU)
     {
-
-        StockQuantityUpdate stockUpdateObj = ((Scanner) context.getApplicationContext()).getStockQtyUpdate();
         stockUpdateObj.setSKU(SKU);
         ((Scanner) callerActivity.getApplication()).setStockQtyUpdate(stockUpdateObj);
     }
 
     public void setBarcodeInStockObj(String barcode)
     {
-        StockQuantityUpdate stockUpdateObj = ((Scanner) context.getApplicationContext()).getStockQtyUpdate();
         stockUpdateObj.setBarcode(barcode);
         ((Scanner) callerActivity.getApplication()).setStockQtyUpdate(stockUpdateObj);
     }
 
     public void getBinNameFromStockObj()
     {
+
+    }
+
+    public void setQuantityInStockObj(int quantity)
+    {
+        stockUpdateObj.setQuantity(quantity);
+        ((Scanner) callerActivity.getApplication()).setStockQtyUpdate(stockUpdateObj);
 
     }
 }

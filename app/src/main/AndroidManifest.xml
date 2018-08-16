@@ -33,7 +33,8 @@
         <activity android:name=".AddingActivities.ThenScanBinActivity" />
         <activity android:name=".AddingActivities.AddStockBinVerifiedActivity" />
         <activity android:name=".AddingActivities.AddStockHowManyActivity" />
-        <activity android:name=".AddingActivities.AddStockProductIdentifiedActivity"></activity>
+        <activity android:name=".AddingActivities.AddStockProductIdentifiedActivity" />
+        <activity android:name=".AddingActivities.AddStockAdditionVerifiedActivity"></activity>
     </application>
 
 </manifest>

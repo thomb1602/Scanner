@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thomb.scanner.Helpers.GlobalAccessor;
+import com.example.thomb.scanner.Helpers.HelperMethods;
 import com.example.thomb.scanner.Listeners.ScanButtonListener;
 import com.example.thomb.scanner.Listeners.SkuEnterKeyListener;
 import com.example.thomb.scanner.R;
@@ -18,7 +19,6 @@ import com.google.zxing.integration.android.IntentResult;
 public class AddStockBinVerifiedActivity extends AppCompatActivity {
 
     private View scanOrSku;
-    private View binVerified;
     private SkuEnterKeyListener skuListener;
     private Button scanButton;
     private ScanButtonListener scanButtonListener;
@@ -28,7 +28,6 @@ public class AddStockBinVerifiedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_stock_bin_verified);
 
-        //scan_or_sku
         scanOrSku = findViewById(R.id.enter_SKU_txt);
         Intent skuEnterIntent = new Intent(this.getApplicationContext(), AddStockHowManyActivity.class);
         skuListener = new SkuEnterKeyListener(this.getApplicationContext(), this, skuEnterIntent);
@@ -37,12 +36,6 @@ public class AddStockBinVerifiedActivity extends AppCompatActivity {
         scanButton = findViewById(R.id.scan_barcode);
         scanButtonListener = new ScanButtonListener(this.getApplicationContext(), this);
         scanButton.setOnClickListener(scanButtonListener);
-
-        //bin_verified
-        binVerified = findViewById(R.id.bin_name_verified);
-        TextView binVerifiedCaption = findViewById(R.id.bin_verified_caption);
-        binVerifiedCaption.setText(R.string.how_many_of_product);
-
     }
 
     @Override
@@ -50,6 +43,7 @@ public class AddStockBinVerifiedActivity extends AppCompatActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null)
         {
+            HelperMethods helper = new HelperMethods();
             String barcode = result.getContents();
             if(result.getContents() == null)
             {
@@ -57,10 +51,16 @@ public class AddStockBinVerifiedActivity extends AppCompatActivity {
             }
             else
             {
-                Toast.makeText(this, barcode, Toast.LENGTH_LONG).show();
-                GlobalAccessor ga = new GlobalAccessor(this.getApplicationContext(), this);
-                ga.setBarcodeInStockObj(barcode);
-                startActivity(new Intent(AddStockBinVerifiedActivity.this, AddStockHowManyActivity.class));
+                if(helper.isGuid(barcode))
+                {
+                    GlobalAccessor ga = new GlobalAccessor(this.getApplicationContext(), this);
+                    ga.setBarcodeInStockObj(barcode);
+                    startActivity(new Intent(AddStockBinVerifiedActivity.this, AddStockHowManyActivity.class));
+                }
+                else
+                {
+                    Toast.makeText(AddStockBinVerifiedActivity.this, "Bin ID not recognised", Toast.LENGTH_LONG).show();
+                }
             }
         }
         else
@@ -69,9 +69,4 @@ public class AddStockBinVerifiedActivity extends AppCompatActivity {
         }
     }
 
-    private void createCaption()
-    {
-        GlobalAccessor ga = new GlobalAccessor(this.getApplicationContext(), this);
-
-    }
 }
